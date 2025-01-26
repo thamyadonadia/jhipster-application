@@ -1,0 +1,146 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-book-heading" data-cy="BookCreateUpdateHeading">Create or edit a Book</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let titleRef = editForm.get('title')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_title">Title</label>
+          <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
+          @if (titleRef.invalid && (titleRef.dirty || titleRef.touched)) {
+            <div>
+              @if (editForm.get('title')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_publicationDate">Publication Date</label>
+          <div class="input-group">
+            <input
+              id="field_publicationDate"
+              data-cy="publicationDate"
+              type="text"
+              class="form-control"
+              name="publicationDate"
+              ngbDatepicker
+              #publicationDateDp="ngbDatepicker"
+              formControlName="publicationDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="publicationDateDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        @let copiesOwnedRef = editForm.get('copiesOwned')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_copiesOwned">Copies Owned</label>
+          <input
+            type="number"
+            class="form-control"
+            name="copiesOwned"
+            id="field_copiesOwned"
+            data-cy="copiesOwned"
+            formControlName="copiesOwned"
+          />
+          @if (copiesOwnedRef.invalid && (copiesOwnedRef.dirty || copiesOwnedRef.touched)) {
+            <div>
+              @if (editForm.get('copiesOwned')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+              @if (editForm.get('copiesOwned')?.errors?.min) {
+                <small class="form-text text-danger">This field should be at least 0.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('copiesOwned')?.errors?.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let statusRef = editForm.get('status')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null"></option>
+            @for (bookStatusEnum of bookStatusEnumValues; track $index) {
+              <option [value]="bookStatusEnum">
+                {{ { null: '', AVAILABLE: 'AVAILABLE', BORROWED: 'BORROWED', UNAVAILABLE: 'UNAVAILABLE' }[bookStatusEnum] }}
+              </option>
+            }
+          </select>
+          @if (statusRef.invalid && (statusRef.dirty || statusRef.touched)) {
+            <div>
+              @if (editForm.get('status')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_category">Category</label>
+          <select
+            class="form-control"
+            id="field_category"
+            data-cy="category"
+            name="category"
+            formControlName="category"
+            [compareWith]="compareCategory"
+          >
+            <option [ngValue]="null"></option>
+            @for (categoryOption of categoriesSharedCollection; track $index) {
+              <option [ngValue]="categoryOption">{{ categoryOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_authors">Author</label>
+          <select
+            class="form-control"
+            id="field_authors"
+            data-cy="author"
+            multiple
+            name="authors"
+            formControlName="authors"
+            [compareWith]="compareAuthor"
+          >
+            @for (authorOption of authorsSharedCollection; track $index) {
+              <option [ngValue]="authorOption">{{ authorOption.lastName }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

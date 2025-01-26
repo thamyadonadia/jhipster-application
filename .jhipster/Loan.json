@@ -1,0 +1,35 @@
+{
+  "annotations": {
+    "changelogDate": "20250126003726"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "loanDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "returnDate",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "name": "Loan",
+  "relationships": [
+    {
+      "otherEntityField": "title",
+      "otherEntityName": "book",
+      "relationshipName": "book",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "lastName",
+      "otherEntityName": "reader",
+      "relationshipName": "member",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

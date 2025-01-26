@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (author(); as authorRef) {
+      <div>
+        <h2 data-cy="authorDetailsHeading"><span>Author</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ authorRef.id }}</span>
+          </dd>
+          <dt><span>First Name</span></dt>
+          <dd>
+            <span>{{ authorRef.firstName }}</span>
+          </dd>
+          <dt><span>Last Name</span></dt>
+          <dd>
+            <span>{{ authorRef.lastName }}</span>
+          </dd>
+          <dt><span>Book</span></dt>
+          <dd>
+            @for (book of authorRef.books; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/book', book.id, 'view']">{{ book?.title }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/author', authorRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

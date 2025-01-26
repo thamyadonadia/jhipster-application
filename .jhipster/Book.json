@@ -1,0 +1,47 @@
+{
+  "annotations": {
+    "changelogDate": "20250126003722"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "publicationDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "copiesOwned",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "BookStatusEnum",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "AVAILABLE,BORROWED,UNAVAILABLE"
+    }
+  ],
+  "name": "Book",
+  "relationships": [
+    {
+      "otherEntityName": "category",
+      "relationshipName": "category",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "lastName",
+      "otherEntityName": "author",
+      "otherEntityRelationshipName": "book",
+      "relationshipName": "author",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

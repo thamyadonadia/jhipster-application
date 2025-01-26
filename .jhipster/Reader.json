@@ -1,0 +1,30 @@
+{
+  "annotations": {
+    "changelogDate": "20250126003725"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "firstName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "joinedDate",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "name": "Reader",
+  "relationships": [],
+  "searchEngine": "no"
+}

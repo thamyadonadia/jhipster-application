@@ -1,0 +1,65 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (book(); as bookRef) {
+      <div>
+        <h2 data-cy="bookDetailsHeading"><span>Book</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ bookRef.id }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ bookRef.title }}</span>
+          </dd>
+          <dt><span>Publication Date</span></dt>
+          <dd>
+            <span>{{ bookRef.publicationDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Copies Owned</span></dt>
+          <dd>
+            <span>{{ bookRef.copiesOwned }}</span>
+          </dd>
+          <dt><span>Status</span></dt>
+          <dd>
+            <span>{{
+              { null: '', AVAILABLE: 'AVAILABLE', BORROWED: 'BORROWED', UNAVAILABLE: 'UNAVAILABLE' }[bookRef.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span>Category</span></dt>
+          <dd>
+            @if (book()!.category) {
+              <div>
+                <a [routerLink]="['/category', book()!.category?.id, 'view']">{{ bookRef.category?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Author</span></dt>
+          <dd>
+            @for (author of bookRef.authors; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/author', author.id, 'view']">{{ author?.lastName }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/book', bookRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

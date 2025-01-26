@@ -1,0 +1,43 @@
+entity Book {
+  title String required,
+  publicationDate LocalDate,
+  copiesOwned Integer required min(0),
+  status BookStatusEnum required
+}
+
+enum BookStatusEnum {
+  AVAILABLE,
+  BORROWED,
+  UNAVAILABLE
+}
+
+entity Category {
+  name String required unique
+}
+
+entity Author {
+  firstName String required,
+  lastName String required
+}
+
+entity Reader {
+  firstName String required,
+  lastName String required,
+  email String required unique,
+  joinedDate LocalDate
+}
+
+entity Loan {
+  loanDate LocalDate required,
+  returnDate LocalDate 
+}
+
+relationship ManyToMany {
+  Book{author(lastName)} to Author{book(title)}
+}
+
+relationship ManyToOne {
+  Loan{book(title)} to Book
+  Loan{member(lastName)} to Reader
+  Book{category} to Category
+}
